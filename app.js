@@ -18,12 +18,12 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(routeLoggerMiddleware.logIp);
 app.use(globalErrorMiddleware.globalErrorHandler);
 
-
 app.use(express.static(path.join(__dirname, 'client')));
+
+
 
 
 const modelsPath = './app/models';
@@ -72,6 +72,16 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 // end server listening code
+
+
+// socket io connection handler 
+const socketLib = require("./app/libs/socketLib");
+const socketServer = socketLib.setServer(server);
+
+
+// end socketio connection handler
+
+
 
 /**
  * Event listener for HTTP server "error" event.
@@ -144,10 +154,6 @@ mongoose.connection.on('open', function (err) {
   }
   //process.exit(1)
 }); // enr mongoose connection open handler
-
-
-
-// end socketio connection handler
 
 
 
